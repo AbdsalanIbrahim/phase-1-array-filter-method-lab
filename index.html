@@ -1,14 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Iterators Filter Lab</title>
-  <meta name="author" content="Flatiron School">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickMeUp Taxi Service</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  hello
-  <script type="text/javascript" src="index.js"></script>
+    <header>
+        <h1>PickMeUp Taxi Service</h1>
+        <p>Find your driver easily!</p>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Find Matching Drivers</h2>
+            <input type="text" id="findInput" placeholder="Enter driver's name">
+            <button onclick="findDriver()">Search</button>
+            <ul id="findResults"></ul>
+        </section>
+        
+        <section>
+            <h2>Fuzzy Match Drivers</h2>
+            <input type="text" id="fuzzyInput" placeholder="Enter starting letters">
+            <button onclick="fuzzyMatchDrivers()">Search</button>
+            <ul id="fuzzyResults"></ul>
+        </section>
+
+        <section>
+            <h2>Match Driver by Name</h2>
+            <input type="text" id="matchInput" placeholder="Enter driver's name">
+            <button onclick="matchDriver()">Search</button>
+            <ul id="matchResults"></ul>
+        </section>
+    </main>
+
+    <script>
+        const drivers = ['Alice', 'Bob', 'Charlie', 'David', 'Eve'];
+        
+        const driverObjects = [
+            { name: 'Alice', hometown: 'New York' },
+            { name: 'Bob', hometown: 'Los Angeles' },
+            { name: 'Charlie', hometown: 'Chicago' },
+            { name: 'David', hometown: 'Houston' },
+            { name: 'Eve', hometown: 'Miami' }
+        ];
+
+        function findMatching(drivers, name) {
+            return drivers.filter(driver => driver.toLowerCase() === name.toLowerCase());
+        }
+
+        function fuzzyMatch(drivers, letters) {
+            return drivers.filter(driver => driver.startsWith(letters));
+        }
+
+        function matchName(drivers, name) {
+            return drivers.filter(driver => driver.name === name);
+        }
+
+        function findDriver() {
+            const input = document.getElementById('findInput').value;
+            const results = findMatching(drivers, input);
+            displayResults('findResults', results);
+        }
+
+        function fuzzyMatchDrivers() {
+            const input = document.getElementById('fuzzyInput').value;
+            const results = fuzzyMatch(drivers, input);
+            displayResults('fuzzyResults', results);
+        }
+
+        function matchDriver() {
+            const input = document.getElementById('matchInput').value;
+            const results = matchName(driverObjects, input);
+            displayResults('matchResults', results.map(driver => `${driver.name} from ${driver.hometown}`));
+        }
+
+        function displayResults(elementId, results) {
+            const resultsList = document.getElementById(elementId);
+            resultsList.innerHTML = '';
+            results.forEach(result => {
+                const li = document.createElement('li');
+                li.textContent = result;
+                resultsList.appendChild(li);
+            });
+        }
+    </script>
 </body>
 </html>
